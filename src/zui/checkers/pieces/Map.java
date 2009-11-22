@@ -70,6 +70,10 @@ public class Map {
      * Nainicializuje figurku pre tuto mapu.
      */
     private void initPiece(int x, int y, Piece piece) {
+    	
+    	rDiagonals.set(getRDiagIndex(piece.getX(), piece.getY()), null);
+    	lDiagonals.set(getLDiagIndex(piece.getX(), piece.getY()), null);
+    	
         piece.setMap(this);
         piece.setX(x);
         piece.setY(y);
@@ -128,5 +132,7 @@ public class Map {
         }
         return agentsPieces;
     }
+    
+
     
 }

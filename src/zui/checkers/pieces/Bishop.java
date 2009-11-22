@@ -16,6 +16,8 @@ import zui.checkers.game.Move;
  *
  */
 public class Bishop extends Piece {
+	
+	private Map tmpMap;
 
     public Bishop(Agent agent) {
         super(agent);
@@ -26,28 +28,62 @@ public class Bishop extends Piece {
         return "bishop";
     }
 
+	/* (non-Javadoc)
+	 * @see zui.checkers.pieces.Piece#getValidSteps()
+	 */
 	@Override
 	public Set<Move> getValidSteps( ) {
 		Set<Move> moves = new HashSet();
+		Map tmpMapLocal = getMap(); // ulozi povodnu mapu
 		
-		Move mr = getRValid(getRDiagonal(), false, false);
-		moves.add(mr);
-		Move ml = getRValid(getRDiagonal(), false, false);
-		moves.add(ml);
+		moves = getValidStepsRecursively();
 		
-		//TODO spravit rekurzivne zistovanie moznosti
-		if(mr.score > 0) {
-			
-		}
-		
-		if(ml.score > 0) {
-			
-		}
+		setMap(tmpMapLocal); // nastavi naspat povodnu mapu
 		
 		return moves;
 	}
 	
-	private Move getRValid( List<Piece> Diagonal, boolean left, boolean onlyScore) {
+	private Set<Move> getValidStepsRecursively() {
+		Set<Move> moves = new HashSet();
+		
+		Move mr = getValid(getRDiagonal(), false, false);
+		moves.add(mr);
+		Move ml = getValid(getRDiagonal(), false, false);
+		moves.add(ml);
+		
+		//TODO spravit rekurzivne zistovanie moznosti
+		if(mr.score > 0) {
+			Map tmpMapLocal = getMap(); // ulozi povodnu mapu
+			Piece tmpPiece = this;
+			
+			doMove(mr);
+			moves.addAll(getValidStepsRecursively());
+			
+			getMap().setPiece(tmpPiece.getX(), tmpPiece.getY(), this);
+			setMap(tmpMapLocal); // nastavi naspat povodnu mapu
+		}
+		
+		if(ml.score > 0) {
+			Map tmpMapLocal = getMap(); // ulozi povodnu mapu
+			Piece tmpPiece = this;
+			
+			doMove(ml);
+			moves.addAll(getValidStepsRecursively());
+			
+			getMap().setPiece(tmpPiece.getX(), tmpPiece.getY(), this);
+			setMap(tmpMapLocal); // nastavi naspat povodnu mapu
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param Diagonal figurky na danej diagonale
+	 * @param isLeft je lava diagonala?
+	 * @param onlyScore vrati iba pohyb ktory preskocil superovho 
+	 * @return pohyb vyhovujuci kriteriam
+	 */
+	private Move getValid( List<Piece> Diagonal, boolean isLeft, boolean onlyScore) {
 		
 		int indexMe = Diagonal.indexOf(this);;
 		
@@ -77,7 +113,7 @@ public class Bishop extends Piece {
 					}
 				}
 				
-				return getMove(length, left, score);
+				return getMove(length, isLeft, score);
 			}else{ //obsadene policko
 				if(piece.getAgent().equals(this.getAgent())) { //nemozem preskakovat svojich
 					return null;
@@ -91,8 +127,16 @@ public class Bishop extends Piece {
 	}
     
 	
-	private Move getMove(int length, boolean left, int score) {
-		if(left) {
+	/**
+	 * Vrati pohyb danej dlzky, neoveruje ci je dane miesto volne
+	 * 
+	 * @param length dlzka skoku
+	 * @param isLeft leva diagonala?
+	 * @param score skore vyhodenych figurok
+	 * @return
+	 */
+	private Move getMove(int length, boolean isLeft, int score) {
+		if(isLeft) {
 			new Move(this, getX()+(length * -1), getY()+length, true, score);
 		}else{
 			return new Move(this, getX()+length, getY()+length, true, score);

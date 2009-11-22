@@ -92,8 +92,15 @@ public abstract class Piece {
         return image;
     }
     
+    public void doMove(Move move) {
+    	map.setPiece(move.x, move.y, this);
+    }
+    
     protected abstract String getImageId();
     
+    /**
+     * @return mnozina moznych pohybov
+     */
     public abstract Set<Move> getValidSteps();
     
 }
