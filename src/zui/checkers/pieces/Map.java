@@ -132,6 +132,21 @@ public class Map {
         }
         return agentsPieces;
     }
+
+	@Override
+	public Map clone(){
+
+		try{
+			return (Map)super.clone();
+		}catch (Exception e) {
+			new AssertionError("Clone not supported for "+getClass().getName());
+		}
+		
+		return null;
+		
+	}
+    
+    
     
 
     

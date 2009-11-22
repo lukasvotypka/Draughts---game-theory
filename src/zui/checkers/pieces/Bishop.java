@@ -34,47 +34,47 @@ public class Bishop extends Piece {
 	@Override
 	public Set<Move> getValidSteps( ) {
 		Set<Move> moves = new HashSet();
-		Map tmpMapLocal = getMap(); // ulozi povodnu mapu
+		Map tmpMapLocal = getMap().clone(); // ulozi povodnu mapu
 		
-		moves = getValidStepsRecursively();
+		moves = getValidStepsRecursively(false);
 		
 		setMap(tmpMapLocal); // nastavi naspat povodnu mapu
 		
 		return moves;
 	}
 	
-	private Set<Move> getValidStepsRecursively() {
+	private Set<Move> getValidStepsRecursively(boolean onlyScore) {
 		Set<Move> moves = new HashSet();
 		
-		Move mr = getValid(getRDiagonal(), false, false);
+		Move mr = getValid(getRDiagonal(), false, onlyScore);
 		moves.add(mr);
-		Move ml = getValid(getRDiagonal(), false, false);
+		Move ml = getValid(getRDiagonal(), true, onlyScore);
 		moves.add(ml);
 		
-		//TODO spravit rekurzivne zistovanie moznosti
+
 		if(mr.score > 0) {
-			Map tmpMapLocal = getMap(); // ulozi povodnu mapu
+			Map tmpMapLocal = getMap().clone(); // ulozi povodnu mapu
 			Piece tmpPiece = this;
 			
 			doMove(mr);
-			moves.addAll(getValidStepsRecursively());
+			moves.addAll(getValidStepsRecursively(true));
 			
 			getMap().setPiece(tmpPiece.getX(), tmpPiece.getY(), this);
 			setMap(tmpMapLocal); // nastavi naspat povodnu mapu
 		}
 		
 		if(ml.score > 0) {
-			Map tmpMapLocal = getMap(); // ulozi povodnu mapu
+			Map tmpMapLocal = getMap().clone(); // ulozi povodnu mapu
 			Piece tmpPiece = this;
 			
 			doMove(ml);
-			moves.addAll(getValidStepsRecursively());
+			moves.addAll(getValidStepsRecursively(true));
 			
 			getMap().setPiece(tmpPiece.getX(), tmpPiece.getY(), this);
 			setMap(tmpMapLocal); // nastavi naspat povodnu mapu
 		}
 		
-		return null;
+		return moves;
 	}
 	
 	/**
