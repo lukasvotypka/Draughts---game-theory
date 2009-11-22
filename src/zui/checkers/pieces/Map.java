@@ -34,7 +34,11 @@ public class Map {
             rDiagonals.add(createEmptyDiagonal(i));
             lDiagonals.add(createEmptyDiagonal(i));
         }
+        
+        
     }
+    
+    
     
     private List<Piece> createEmptyDiagonal(int size) {
         List<Piece> diag = new ArrayList<Piece>(size);
@@ -56,14 +60,17 @@ public class Map {
     public Piece setPiece(int x, int y, Piece piece) {
         initPiece(x, y, piece);
         
-        Piece rPiece = rDiagonals.get(getRDiagIndex(x, y)).set(x-1, piece);
-        Piece lPiece = lDiagonals.get(getLDiagIndex(x, y)).set(y-1, piece);
+        //TODO toto je nejake cudne!
+//        Piece rPiece = rDiagonals.get(getRDiagIndex(x, y)).set(x-1, piece);
+//        Piece lPiece = lDiagonals.get(getLDiagIndex(x, y)).set(y-1, piece);
         
-        if (rPiece != lPiece) {
-            throw new AssertionError("Nekonzistentna mapa! [" + lPiece + ", " + rPiece + "]");
-        } else {
-            return rPiece;
-        }
+//        if (rPiece != lPiece) {
+//            throw new AssertionError("Nekonzistentna mapa! [" + lPiece + ", " + rPiece + "]");
+//        } else {
+//            return rPiece;
+//        }
+        
+        return piece;
     }
     
     /**
@@ -71,8 +78,7 @@ public class Map {
      */
     private void initPiece(int x, int y, Piece piece) {
     	
-    	rDiagonals.set(getRDiagIndex(piece.getX(), piece.getY()), null);
-    	lDiagonals.set(getLDiagIndex(piece.getX(), piece.getY()), null);
+    	//TODO uvolnit povodne miesto na sachovnici
     	
         piece.setMap(this);
         piece.setX(x);

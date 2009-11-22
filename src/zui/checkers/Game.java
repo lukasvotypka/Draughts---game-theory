@@ -46,7 +46,7 @@ public class Game {
     public void initAgent(int agentId, int agentType, int attackDir, int timeToThink) {
         if (agentId == 1) {
             agent01 = createAgent(agentType, attackDir, timeToThink);
-            map.setPiece(1, 1, new Bishop(agent01));
+            //map.setPiece(1, 1, new Bishop(agent01));
         } else if (agentId == 2) {
             agent02 = createAgent(agentType, attackDir, timeToThink);
         } else {
