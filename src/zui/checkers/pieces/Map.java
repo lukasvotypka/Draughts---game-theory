@@ -34,11 +34,7 @@ public class Map {
             rDiagonals.add(createEmptyDiagonal(i));
             lDiagonals.add(createEmptyDiagonal(i));
         }
-        
-        
     }
-    
-    
     
     private List<Piece> createEmptyDiagonal(int size) {
         List<Piece> diag = new ArrayList<Piece>(size);
@@ -59,38 +55,29 @@ public class Map {
      */
     public Piece setPiece(int x, int y, Piece piece) {
         initPiece(x, y, piece);
+        // setnutie figurky do zoznamu pravych diagonal
+        int rDiagIndex = getRDiagIndex(x, y);
+        int rPieceIndex = getRPieceIndex(rDiagIndex, x, y);
+        Piece rPiece = rDiagonals.get(rDiagIndex).set(rPieceIndex, piece);
+        // setnutie figurky do zoznamu lavych diagonal
+        int lDiagIndex = getLDiagIndex(x, y);
+        int lPieceIndex = getLPieceIndex(lDiagIndex, x, y);
+        Piece lPiece = lDiagonals.get(lDiagIndex).set(lPieceIndex, piece);
         
-        //TODO toto je nejake cudne!
-//        Piece rPiece = rDiagonals.get(getRDiagIndex(x, y)).set(x-1, piece);
-//        Piece lPiece = lDiagonals.get(getLDiagIndex(x, y)).set(y-1, piece);
-        
-//        if (rPiece != lPiece) {
-//            throw new AssertionError("Nekonzistentna mapa! [" + lPiece + ", " + rPiece + "]");
-//        } else {
-//            return rPiece;
-//        }
-        
-        return piece;
+        if (rPiece != lPiece) {
+            throw new AssertionError("Nekonzistentna mapa! [" + lPiece + ", " + rPiece + "]");
+        } else {
+            return rPiece;
+        }
     }
     
     /**
      * Nainicializuje figurku pre tuto mapu.
      */
     private void initPiece(int x, int y, Piece piece) {
-    	
-    	//TODO uvolnit povodne miesto na sachovnici
-    	
         piece.setMap(this);
         piece.setX(x);
         piece.setY(y);
-    }
-    
-    private int getRDiagIndex(int x, int y) {
-        return SIZE - 3 - x + y;
-    }
-    
-    private int getLDiagIndex(int x, int y) {
-        return x + y - 2;
     }
     
     /**
@@ -100,7 +87,25 @@ public class Map {
      * ak je dane policko prazdne.
      */
     public Piece getPieceAt(int x, int y) {
-        return rDiagonals.get(getRDiagIndex(x, y)).get(x-1);
+        int diagIndex = getRDiagIndex(x, y);
+        List<Piece> rDiag = rDiagonals.get(diagIndex);
+        return rDiag.get(getRPieceIndex(diagIndex, x, y));
+    }
+    
+    private int getRPieceIndex(int diagIndex, int x, int y) {
+        return (diagIndex<SIZE) ? y-1 : x-1;
+    }
+    
+    private int getLPieceIndex(int diagIndex, int x, int y) {
+        return (diagIndex<SIZE) ? y-1 : SIZE-x;
+    }
+    
+    private int getRDiagIndex(int x, int y) {
+        return SIZE - x + y - 1;
+    }
+    
+    private int getLDiagIndex(int x, int y) {
+        return x + y - 2;
     }
     
     /**
@@ -118,7 +123,7 @@ public class Map {
      * @return Vrati "lavu" diagonalu prechadzajucu polickom <tt>(x, y)<tt>.
      */
     public List<Piece> getLDiagonalAt(int x, int y) {
-        return rDiagonals.get(getRDiagIndex(x, y));
+        return lDiagonals.get(getLDiagIndex(x, y));
     }
     
     /**
@@ -138,22 +143,5 @@ public class Map {
         }
         return agentsPieces;
     }
-
-	@Override
-	public Map clone(){
-
-		try{
-			return (Map)super.clone();
-		}catch (Exception e) {
-			new AssertionError("Clone not supported for "+getClass().getName());
-		}
-		
-		return null;
-		
-	}
-    
-    
-    
-
     
 }

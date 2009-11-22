@@ -1,16 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package zui.checkers;
 
 /**
  *
- * @author miso
+ * @author miso, lukas
  */
 public interface GUI {
 
+    /**
+     * Velkost grafickej reprezentacie figurky v pixeloch.
+     */
+    public static final int PIECE_SIZE = 50;
+    
     void setAgentOnTurnHighlighted(int agentId);
 
     void showMessage(String message);

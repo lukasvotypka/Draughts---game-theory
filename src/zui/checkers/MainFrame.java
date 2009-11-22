@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * MainFrame.java
- *
- * Created on Nov 21, 2009, 6:06:18 PM
- */
-
 package zui.checkers;
 
 import java.awt.Dimension;
@@ -30,7 +19,7 @@ import zui.checkers.pieces.Piece;
 
 /**
  *
- * @author miso
+ * @author miso, lukas
  */
 public class MainFrame extends javax.swing.JFrame implements GUI {
 
@@ -45,7 +34,7 @@ public class MainFrame extends javax.swing.JFrame implements GUI {
         initComponents();
         initSlider(agent01Slider, jLabel3);
         initSlider(agent02Slider, jLabel4);
-        boardCanvas.setPreferredSize(new Dimension(30*Map.SIZE, 30*Map.SIZE));
+        boardCanvas.setPreferredSize(new Dimension(GUI.PIECE_SIZE*Map.SIZE, GUI.PIECE_SIZE*Map.SIZE));
 
         setTitle("ZUI Dáma (Lukas Votypka, Michal Vician)");
         msgLabel.setText("Vitajte");
@@ -204,6 +193,10 @@ public class MainFrame extends javax.swing.JFrame implements GUI {
             agent01Slider.setEnabled(true);
             agent02Combo.setEnabled(true);
             agent02Slider.setEnabled(true);
+            
+            game.stopAndDestroy();
+            game = null;
+            boardCanvas.repaint();
         }
 
     }//GEN-LAST:event_gameButtonActionPerformed
@@ -262,6 +255,9 @@ public class MainFrame extends javax.swing.JFrame implements GUI {
         @Override
         public void paint(Graphics g) {
             Image img = null;
+            
+            int xFlag = GUI.PIECE_SIZE;
+            int yFlag = GUI.PIECE_SIZE*Map.SIZE;
             for (int x = 1; x<=Map.SIZE; x++) {
                 for (int y = 1; y<=Map.SIZE; y++) {
                     if (game != null) {
@@ -273,7 +269,9 @@ public class MainFrame extends javax.swing.JFrame implements GUI {
                     if (img == null) {
                         img = ((x+y)%2==1) ? white: black;
                     }
-                    g.drawImage(img, x * 30, y * 30, rootPane);
+                    g.drawImage(img,
+                            x*xFlag-GUI.PIECE_SIZE,
+                            yFlag-y*GUI.PIECE_SIZE, rootPane);
                     img = null;
                 }
             }

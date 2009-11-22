@@ -14,9 +14,9 @@ public abstract class Agent {
      */
     public final int attackDir;
     
-    private int timeToThink = -1;
+    public final int timeToThink;
     
-    private Game game;
+    private final Game game;
     
     /**
      * @param game Hra, ktoru tento hrac bude hrat.
@@ -29,6 +29,7 @@ public abstract class Agent {
             throw new IllegalArgumentException("Hodnota musi byt 1 alebo -1. [" + attackDir + "]");
         }
         this.attackDir = attackDir;
+        this.timeToThink = timeToThink;
         this.game = game;
     }
     

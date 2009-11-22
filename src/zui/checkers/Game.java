@@ -1,8 +1,5 @@
 package zui.checkers;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import zui.checkers.agents.ABCutAgent;
 import zui.checkers.agents.Agent;
 import zui.checkers.agents.CutOffSearchAgent;
@@ -10,7 +7,6 @@ import zui.checkers.agents.HumanAgent;
 import zui.checkers.agents.MinimaxAgent;
 import zui.checkers.pieces.Bishop;
 import zui.checkers.pieces.Map;
-import zui.checkers.pieces.Queen;
 
 public class Game {
 
@@ -46,9 +42,24 @@ public class Game {
     public void initAgent(int agentId, int agentType, int attackDir, int timeToThink) {
         if (agentId == 1) {
             agent01 = createAgent(agentType, attackDir, timeToThink);
-            //map.setPiece(1, 1, new Bishop(agent01));
+            map.setPiece(1, 1, new Bishop(agent01));
+            map.setPiece(2, 2, new Bishop(agent01));
+            map.setPiece(3, 1, new Bishop(agent01));
+            map.setPiece(4, 2, new Bishop(agent01));
+            map.setPiece(5, 1, new Bishop(agent01));
+            map.setPiece(6, 2, new Bishop(agent01));
+            map.setPiece(7, 1, new Bishop(agent01));
+            map.setPiece(8, 2, new Bishop(agent01));
         } else if (agentId == 2) {
             agent02 = createAgent(agentType, attackDir, timeToThink);
+            map.setPiece(1, 7, new Bishop(agent02));
+            map.setPiece(2, 8, new Bishop(agent02));
+            map.setPiece(3, 7, new Bishop(agent02));
+            map.setPiece(4, 8, new Bishop(agent02));
+            map.setPiece(5, 7, new Bishop(agent02));
+            map.setPiece(6, 8, new Bishop(agent02));
+            map.setPiece(7, 7, new Bishop(agent02));
+            map.setPiece(8, 8, new Bishop(agent02));
         } else {
             throw new IllegalArgumentException("Hrac cislo " + agentId + " nie je validnym hracom.");
         }
@@ -73,10 +84,16 @@ public class Game {
             gui.showMessage("Vyberte hracov.");
         } else {
             agentOnTurn = agent01;
-            
+            gui.repaintBoard();
             // TODO: 
         }
-        
+    }
+    
+    public void stopAndDestroy() {
+        // TODO do mem cleanup
+        // agent01.destroy();
+        // agent02.destroy();
+        // map.destroy();
     }
     
     public Agent getAgentOnTurn() {
