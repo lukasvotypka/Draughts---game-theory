@@ -2,10 +2,12 @@ package zui.checkers.pieces;
 
 import java.awt.Image;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
 import zui.checkers.agents.Agent;
+import zui.checkers.game.Move;
 
 /**
  * Trieda reprezentujuca figurku patriacu konktretnemu hracovi/agentovi.
@@ -33,6 +35,10 @@ public abstract class Piece {
         this.map = map;
     }
     
+    protected Map getMap() {
+    	return map;
+    }
+    
     protected void setX(int x) {
         this.x = x;
     }
@@ -41,7 +47,17 @@ public abstract class Piece {
         this.y = y;
     }
     
-    /**
+    
+    
+    protected int getX() {
+		return x;
+	}
+
+	protected int getY() {
+		return y;
+	}
+
+	/**
      * @return Hrac/agent, ktoremu patri figurka na tomto policku, alebo
      * <tt>null</tt> ak na tomto policku nestoji ziadna figurka.
      */
@@ -77,5 +93,7 @@ public abstract class Piece {
     }
     
     protected abstract String getImageId();
+    
+    public abstract Set<Move> getValidSteps();
     
 }
